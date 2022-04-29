@@ -82,7 +82,7 @@ Stack::Stack(Stack&& moveStack) noexcept {
   
 Stack& Stack::operator=(Stack&& moveStack) noexcept {
    if (this != &moveStack) {
-      delete[] _pimpl;
+      delete _pimpl;
       _pimpl = moveStack._pimpl;
       moveStack._pimpl = nullptr;
       _containerType = moveStack._containerType;
