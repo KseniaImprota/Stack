@@ -7,6 +7,8 @@ using namespace std;
 #include "StackImplementation.h"
 
 class VectorStack : public IStackImplementation {
+private:
+    vector<ValueType> _vector;
 public:
     VectorStack() = default;
 
@@ -21,6 +23,4 @@ public:
     bool isEmpty() const;
 
     size_t size() const;
-private:
-    vector<ValueType> _vector;
 };
