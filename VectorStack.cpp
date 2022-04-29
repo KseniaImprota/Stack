@@ -1,5 +1,7 @@
 #include "VectorStack.h"
 #include <vector>
+#include <stdexcept>
+#include <cstddef>
 
 using namespace std;
 
