@@ -1,7 +1,9 @@
-pragma once
+#pragma once
 
 #include "StackImplementation.h"
 #include <list>
+#include <stdexcept>
+#include <cstddef>
 
 using namespace std;
 
