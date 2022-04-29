@@ -4,9 +4,11 @@
 #include "StackImplementation.h"
 
 #include <stdexcept>
+#include <cstddef>
 
-Stack::Stack(StackContainer container)
-    : _containerType(container)
+using namespace std;
+
+Stack::Stack(StackContainer container) : _containerType(container)
 {
     switch (container)
     {
@@ -19,23 +21,74 @@ Stack::Stack(StackContainer container)
         break;
     }
     default:
-        throw std::runtime_error("Неизвестный тип контейнера");
+        throw runtime_error("Неизвестный тип контейнера");
     }
 }
 
-Stack::Stack(const ValueType* valueArray, const size_t arraySize, StackContainer container)
+Stack::Stack(const ValueType* valueArray, const size_t arraySize, StackContainer container) : _containerType(container)
 {
+  switch (container)
+    {
+    case StackContainer::List: {
+        _pimpl = static_cast<IStackImplementation*>(new ListStack(valueArray, arraySize)); 
+        break;
+    }
+    case StackContainer::Vector: {
+        _pimpl = static_cast<IStackImplementation*>(new VectorStack(valueArray, arraySize));
+        break;
+    }
+    default:
+        throw runtime_error("Неизвестный тип контейнера");
+    }
     // принцип тот же, что и в прошлом конструкторе
 }
 
-Stack::Stack(const Stack& copyStack)
+Stack::Stack(const Stack& copyStack): Stack(copyStack._containerType)
 {
-    // сами
+    switch (copyStack._containerType)
+    {
+    case StackContainer::List: {
+        _pimpl = static_cast<IStackImplementation*>(new ListStack(*dynamic_cast<ListStack*>(copyStack._pimpl)));
+        break;
+    }
+    case StackContainer::Vector: {
+        _pimpl = static_cast<IStackImplementation*>(new VectorStack(*dynamic_cast<VectorStack*>(copyStack._pimpl)));
+        break;
+    }
+    default:
+        throw runtime_error("Неизвестный тип контейнера");
+    }
 }
 
 Stack& Stack::operator=(const Stack& copyStack)
 {
+  if (this != &copyStack) {
+      delete _pimpl;
+      Stack result(copyStack);
+      _pimpl = result._pimpl;
+      result._pimpl = nullptr;
+      _containerType = result._containerType;
+      return *this;
+	}
+  return *this;
     // TODO: вставьте здесь оператор return
+}
+
+Stack::Stack(Stack&& moveStack) noexcept {
+  _pimpl = moveStack._pimpl;
+  moveStack._pimpl = nullptr;
+  _containerType = moveStack._containerType;
+}
+  
+Stack& Stack::operator=(Stack&& moveStack) noexcept {
+   if (this != &moveStack) {
+      delete[] _pimpl;
+      _pimpl = moveStack._pimpl;
+      moveStack._pimpl = nullptr;
+      _containerType = moveStack._containerType;
+      return *this;
+    }
+    return *this;
 }
 
 Stack::~Stack()
