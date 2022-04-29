@@ -1,4 +1,6 @@
 #pragma once
+#include <stdexcept>
+#include <cstddef>
 
 // приходится тянуть ValueType во все места,
 using ValueType = double;
