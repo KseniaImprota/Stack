@@ -1,4 +1,6 @@
 #pragma once
+#include <stdexcept>
+#include <cstddef>
 // Уровень абстракции
 // клиентский код подключает именно этот хедер
 
