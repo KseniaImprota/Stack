@@ -3,6 +3,7 @@
 using namespace std;
 
 #include <cstddef>
+#include <stdexcept>
 #include <vector>
 #include "StackImplementation.h"
 
